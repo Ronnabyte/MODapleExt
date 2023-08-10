@@ -1,0 +1,34 @@
+{
+  "name": "modaplestory-script",
+  "displayName": "ModapleStory Script",
+  "description": "Mapleland를 위한 문법 하이라이터",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.81.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "modaple",
+        "aliases": [
+          "MODaple",
+          "modaple"
+        ],
+        "extensions": [
+          ".maple"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "modaple",
+        "scopeName": "source.modaple",
+        "path": "./syntaxes/modaple.tmLanguage.json"
+      }
+    ]
+  }
+}

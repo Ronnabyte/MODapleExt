@@ -1,0 +1,412 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "MODaple",
+  "patterns": [
+    {
+      "include": "#code"
+    }
+  ],
+  "repository": {
+    "code": {
+      "patterns": [
+        {
+          "include": "#comments"
+        },
+        {
+          "include": "#parens"
+        },
+        {
+          "include": "#numbers"
+        },
+        {
+          "include": "#strings"
+        },
+        {
+          "include": "#keywords"
+        },
+        {
+          "include": "#varwords"
+        },
+        {
+          "include": "#scripts"
+        },
+        {
+          "include": "#functions"
+        },
+        {
+          "include": "#function-call"
+        },
+        {
+          "match": ",",
+          "name": "punctuation.separator.delimiter.modaple"
+        },
+        {
+          "match": "\\.",
+          "name": "punctuation.separator.period.modaple"
+        },
+        {
+          "match": ";",
+          "name": "punctuation.terminator.modaple"
+        },
+        {
+          "match": "(\\w+)",
+          "name": "variable.function.modaple"
+        }
+      ]
+    },
+    "comments": {
+      "patterns": [
+        {
+          "captures": {
+            "0": {
+              "name": "punctuation.definition.comment.modaple"
+            }
+          },
+          "match": "/\\*\\*/",
+          "name": "comment.block.empty.modaple"
+        },
+        {
+          "include": "#comments-inline"
+        }
+      ]
+    },
+    "comments-inline": {
+      "patterns": [
+        {
+          "begin": "/\\*",
+          "captures": {
+            "0": {
+              "name": "punctuation.definition.comment.modaple"
+            }
+          },
+          "end": "\\*/",
+          "name": "comment.block.modaple"
+        },
+        {
+          "begin": "(^[ \\t]+)?(?=//)",
+          "beginCaptures": {
+            "1": {
+              "name": "punctuation.whitespace.comment.leading.modaple"
+            }
+          },
+          "end": "(?!\\G)",
+          "patterns": [
+            {
+              "begin": "//",
+              "beginCaptures": {
+                "0": {
+                  "name": "punctuation.definition.comment.modaple"
+                }
+              },
+              "end": "\\n",
+              "name": "comment.line.double-slash.modaple"
+            }
+          ]
+        }
+      ]
+    },
+    "functions": {
+      "begin": "\\b(function)\\b",
+      "beginCaptures": {
+        "0": {
+          "name": "storage.modifier.modaple"
+        }
+      },
+      "end": "(})",
+      "endCaptures": {
+        "1": {
+          "name": "punctuation.section.function.end.bracket.curly.modaple"
+        }
+      },
+      "name": "meta.function.modaple",
+      "patterns": [
+        {
+          "begin": "(\\w+)\\s*(\\()",
+          "beginCaptures": {
+            "1": {
+              "name": "entity.name.function.modaple"
+            },
+            "2": {
+              "name": "punctuation.definition.parameters.begin.bracket.round.modaple"
+            }
+          },
+          "end": "\\)",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.parameters.end.bracket.round.modaple"
+            }
+          },
+          "name": "meta.function.identifier.modaple",
+          "patterns": [
+            {
+              "include": "#parameters"
+            },
+            {
+              "include": "#comments"
+            }
+          ]
+        },
+        {
+          "begin": "{",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.section.function.begin.bracket.curly.modaple"
+            }
+          },
+          "end": "(?=})",
+          "contentName": "meta.function.body.modaple",
+          "patterns": [
+            {
+              "include": "#code"
+            }
+          ]
+        },
+        {
+          "include": "#comments"
+        }
+      ]
+    },
+    "function-call": {
+      "begin": "([A-Za-z_$][\\w$]*)\\s*(\\()",
+      "beginCaptures": {
+        "1": {
+          "name": "entity.name.function.modaple"
+        },
+        "2": {
+          "name": "punctuation.definition.parameters.begin.bracket.round.modaple"
+        }
+      },
+      "end": "\\)",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.parameters.end.bracket.round.modaple"
+        }
+      },
+      "name": "meta.function-call.modaple",
+      "patterns": [
+        {
+          "include": "#code"
+        }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "match": "\\b(if|else)\\b",
+          "name": "keyword.control.modaple.conditional.modaple"
+        },
+        {
+          "match": "\\b(return|break|case|continue|default|while|for|switch)\\b",
+          "name": "keyword.control.modaple"
+        },
+        {
+          "match": "(<<|>>|~|\\^)",
+          "name": "keyword.operator.bitwise.modaple"
+        },
+        {
+          "match": "(==|!=|<=|>=|<>|<|>)",
+          "name": "keyword.operator.comparison.modaple"
+        },
+        {
+          "match": "(\\-|\\+|\\*|\\/|%)",
+          "name": "keyword.operator.arithmetic.modaple"
+        },
+        {
+          "match": "(!|&&|\\|\\|and|or)",
+          "name": "keyword.operator.logical.modaple"
+        },
+        {
+          "match": "(\\||&)",
+          "name": "keyword.operator.bitwise.modaple"
+        },
+        {
+          "match": "\\b(end)\\b",
+          "name": "invalid.modaple"
+        }
+      ]
+    },
+    "varwords": {
+      "patterns": [
+        {
+          "match": "(@\\w+)",
+          "name": "variable.other.constant.modaple"
+        },
+        {
+          "match": "(\\.\\w+)",
+          "name": "variable.language.modaple"
+        }
+      ]
+    },
+    "numbers": {
+      "patterns": [
+        {
+          "match": "(?x)\n\\b(?<!\\$)\n0(x|X)\n(\n  (?<!\\.)[0-9a-fA-F]([0-9a-fA-F_]*[0-9a-fA-F])?[Ll]?(?!\\.)\n  |\n  (\n    [0-9a-fA-F]([0-9a-fA-F_]*[0-9a-fA-F])?\\.?\n    |\n    ([0-9a-fA-F]([0-9a-fA-F_]*[0-9a-fA-F])?)?\\.[0-9a-fA-F]([0-9a-fA-F_]*[0-9a-fA-F])?\n  )\n  [Pp][+-]?[0-9]([0-9_]*[0-9])?[FfDd]?\n)\n\\b(?!\\$)",
+          "name": "constant.numeric.hex.modaple"
+        },
+        {
+          "match": "(?x)\n(?<!\\$)\n(\n  \\b[0-9]([0-9_]*[0-9])?\\.\\B(?!\\.)\n  |\n  \\b[0-9]([0-9_]*[0-9])?\\.([Ee][+-]?[0-9]([0-9_]*[0-9])?)[FfDd]?\\b\n  |\n  \\b[0-9]([0-9_]*[0-9])?\\.([Ee][+-]?[0-9]([0-9_]*[0-9])?)?[FfDd]\\b\n  |\n  \\b[0-9]([0-9_]*[0-9])?\\.([0-9]([0-9_]*[0-9])?)([Ee][+-]?[0-9]([0-9_]*[0-9])?)?[FfDd]?\\b\n  |\n  (?<!\\.)\\B\\.[0-9]([0-9_]*[0-9])?([Ee][+-]?[0-9]([0-9_]*[0-9])?)?[FfDd]?\\b\n  |\n  \\b[0-9]([0-9_]*[0-9])?([Ee][+-]?[0-9]([0-9_]*[0-9])?)[FfDd]?\\b\n  |\n  \\b[0-9]([0-9_]*[0-9])?([Ee][+-]?[0-9]([0-9_]*[0-9])?)?[FfDd]\\b\n  |\n  \\b(0|[1-9]([0-9_]*[0-9])?)(?!\\.)[Ll]?\\b\n)\n(?!\\$)",
+          "name": "constant.numeric.decimal.modaple"
+        }
+      ]
+    },
+    "parameters": {
+      "patterns": [
+        {
+          "match": "\\w+",
+          "name": "variable.parameter.modaple"
+        },
+        {
+          "match": ",",
+          "name": "punctuation.separator.delimiter.modaple"
+        }
+      ]
+    },
+    "parens": {
+      "patterns": [
+        {
+          "begin": "\\(",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.bracket.round.modaple"
+            }
+          },
+          "end": "\\)",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.bracket.round.modaple"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#code"
+            }
+          ]
+        },
+        {
+          "begin": "\\[",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.bracket.square.modaple"
+            }
+          },
+          "end": "\\]",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.bracket.square.modaple"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#code"
+            }
+          ]
+        },
+        {
+          "begin": "{",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.bracket.curly.modaple"
+            }
+          },
+          "end": "}",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.bracket.curly.modaple"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#code"
+            }
+          ]
+        }
+      ]
+    },
+    "scripts": {
+      "begin": "\\b(script)\\b",
+      "beginCaptures": {
+        "0": {
+          "name": "storage.modifier.modaple"
+        }
+      },
+      "end": "(})",
+      "endCaptures": {
+        "1": {
+          "name": "punctuation.section.script.end.bracket.curly.modaple"
+        }
+      },
+      "name": "meta.function.modaple",
+      "patterns": [
+        {
+          "match": "\"(\\w+)\"",
+          "name": "entity.name.class.modaple"
+        },
+        {
+          "begin": "{",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.section.script.begin.bracket.curly.modaple"
+            }
+          },
+          "end": "(?=})",
+          "contentName": "meta.function.body.modaple",
+          "patterns": [
+            {
+              "include": "#code"
+            }
+          ]
+        },
+        {
+          "include": "#comments"
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "begin": "\"",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.begin.modaple"
+            }
+          },
+          "end": "\"",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.end.modaple"
+            }
+          },
+          "name": "string.quoted.double.modaple",
+          "patterns": [
+            {
+              "match": "\\\\.",
+              "name": "constant.character.escape.modaple"
+            }
+          ]
+        },
+        {
+          "begin": "'",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.begin.modaple"
+            }
+          },
+          "end": "'",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.end.modaple"
+            }
+          },
+          "name": "string.quoted.single.modaple",
+          "patterns": [
+            {
+              "match": "\\\\.",
+              "name": "constant.character.escape.modaple"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "scopeName": "source.modaple"
+}
